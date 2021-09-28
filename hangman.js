@@ -4,6 +4,9 @@ const refranes = [
     "QUIEN A HIERRO MATA A HIERRO MUERE"
 ]
 
+let refran = ""
+let refranOculto = ""
+
 const elegirRefran = () => {
     const pos = Math.round(Math.random() * 2);
     return refranes[pos]
@@ -29,12 +32,39 @@ const cargarRefran = (refran) => {
     divRefran.innerHTML = refran
 }
 
+const buscarLetraRefran = (letra, refran, refranOculto) => {
+    let nuevoRefranOculto = ""
+    for (let i=0; i< refran.length; i++) {
+        if (letra == refran[i]) {
+            nuevoRefranOculto += refran[i]
+        }else {
+            nuevoRefranOculto += refranOculto[i]
+        }
+    }
+    return nuevoRefranOculto;
+}
+
+const letraInputOnKeypress = (evt) => {
+    const letraIngresada = evt.key.toUpperCase()
+    const nuevoRefranOculto = buscarLetraRefran(letraIngresada, refran, refranOculto)
+    if (refranOculto == nuevoRefranOculto) {
+        // No descubrio una nueva letra
+        console.log("Deberia mostrar nueva imagen")
+    }else {
+        refranOculto = nuevoRefranOculto
+        cargarRefran(refranOculto)
+    }
+}
+
 
 const main = () => {
-    const refran = elegirRefran()
-    const refranOculto = ocultarRefran(refran)
+    refran = elegirRefran()
+    refranOculto = ocultarRefran(refran)
     
     cargarRefran(refranOculto)
+
+    let inputLetras = document.querySelector("#letras")
+    inputLetras.addEventListener("keypress", letraInputOnKeypress)
 
 }
 
